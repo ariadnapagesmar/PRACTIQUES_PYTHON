@@ -64,6 +64,19 @@ print("Hello world!")
 # caràcter separador que li indiquis (per defecte separa per espais).
 # Exemple: "vermell,blau,verd".split(",") dóna ["vermell", "blau", "verd"].
 
+# zip(): Aquesta funció s'encarrega d'"aparellar" els elements de tantes llistes
+# com li passis en forma de tuples.
+# EXEMPLE:
+
+noms = ["  anna garcia ", "PERE martínez ", "  joan    PaMpIn", " arI pagES     "]
+sous = [1900, 1200, 2500, 2100]
+
+# Utilitzem zip(noms, sous) per unir les dues llistes en parelles (nom, sou)
+# I aplicarem .strip().title() al nom per netejar-lo
+noms_sous = [(nom.strip().title(), sou) for nom, sou in zip(noms, sous) if sou > 1500]
+
+print(noms_sous)
+
 
 # IF (exemple)
 
@@ -172,11 +185,12 @@ frutas2.reverse()
 print(frutas2)  # Imprime ["uva", "pera", "manzana"]
 
 
-# CALCULS DINS DE LLISTES (exemple) 
+# CÀLCULS DINS DE LLISTES (exemple)
 
 numeros1 = [1, 2, 3, 4, 5]
 cuadrados = [x ** 2 for x in numeros1 if x % 2 == 0]
 print(cuadrados)  # Imprime [4, 16]
+
 
 # TUPLES (exemple)
 
@@ -331,3 +345,9 @@ print(f"El número enter aleatori generat és: {numero_aleatori}")
 # l'atzar dins del rang tancat entre a i b (és a dir, inclou tant el
 # límit inferior com el superior).
 
+import random
+
+# Genera un número decimal (float) aleatori entre l'1.0 i el 10.0
+numero_aleatori = random.uniform(1.0, 10.0)
+
+print(f"El número decimal aleatori generat és: {numero_aleatori}")
