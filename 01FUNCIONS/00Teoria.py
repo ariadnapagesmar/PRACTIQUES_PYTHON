@@ -222,6 +222,52 @@ archivo.close()
 # Es importante cerrar siempre los archivos después de utilizarlos para
 # liberar los recursos del sistema.
 
+# La solució neta: EL BLOC WITH (Gestor de context)
+
+# Per evitar haver de preocupar-te de tancar el fitxer manualment o de si
+# salta una excepció, a Python fem servir sempre la paraula clau with.
+# El with s'encarrega automàticament d'obrir el fitxer i, passi el que
+# passi (fins i tot si hi ha un error o una excepció a dins), s'encarrega
+# de tancar-lo de manera segura quan surts del bloc.
+
+# Exemple per llegir:
+# El 'with' obri el fitxer i el tanca automàticament en acabar
+try:
+    with open("el_meu_fitxer.txt", "r", encoding="utf-8") as archivo:
+        contingut = archivo.read()
+        print(contingut)
+except FileNotFoundError:
+    print("Vaja, el fitxer no existeix!")
+
+# Exemple per escriure:
+try:
+    # Amb "w" (write) o "a" (append)
+    with open("el_meu_fitxer.txt", "w", encoding="utf-8") as archivo:
+        archivo.write("Hola, això és una prova de text!")
+except Exception as e:
+    print(f"S'ha produït un error al guardar: {e}")
+
+# El mode "r" és l'únic que sí que llança una excepció (FileNotFoundError)
+# si el fitxer no existeix, perquè intenta llegir quelcom que no hi és.
+
+# Si vols que, en cas que no existeixi, el programa capturi l'error i el
+# creï en aquell moment, la estructura s'organitza així:
+
+try:
+    # Intentem llegir el fitxer (si no existeix, saltarà directament al 'except')
+    with open("el_meu_fitxer.txt", "r", encoding="utf-8") as archivo:
+        contingut = archivo.read()
+        print(contingut)
+
+except FileNotFoundError:
+    print("El fitxer no existia. El crearem ara mateix!")
+
+    # Com que no existeix, el creem dins de l'except fent un open amb "w"
+    with open("el_meu_fitxer.txt", "w", encoding="utf-8") as archivo:
+        archivo.write("Aquest és un fitxer nou.")
+    print("Fitxer creat amb èxit des de l'except.")
+
+
 # IMPORTACIÓN Y CREACIÓN DE MÓDULOS
 # Funciones y clases de módulos estándar
 
