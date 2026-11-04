@@ -187,6 +187,58 @@ finally:
     archivo.close()  # Cerrar el archivo siempre, incluso si ocurre una excepción
 
 
+# Raise
+
+# Fins ara has après a capturar errors que ja passaven sols (com dividir per zero
+# o buscar un fitxer que no existeix), però amb la paraula raise fem el pas
+# contrari: provocar o llançar un error nosaltres mateixos quan passa alguna
+# cosa que no hauria de passar.
+
+# Com funciona el raise?
+# Imagina que estàs programant la lògica d'una botiga o d'una biblioteca. Si algú
+# vol demanar un llibre i no en queda cap, el programa no pot continuar com si
+# res; has de "forçar" un error perquè el sistema s'aturi i avisi.
+
+# Mira aquest exemple senzill amb una classe que direm Llibre
+
+class Llibre:
+    def __init__(self, titol, exemplars):
+        self.titol = titol
+        self.exemplars = exemplars
+
+    def prestar(self):
+        # Comprovem si queden exemplars
+        if self.exemplars <= 0:
+            # SI NO EN QUEDEN, LLENCEM UN ERROR MANUALMENT AMB 'raise'
+            raise ValueError("No queden exemplars disponibles d'aquest llibre!")
+
+        # Si sí que en queden, restem un exemplar
+        self.exemplars -= 1
+        print(f"Has agafat prestat el llibre: {self.titol}")
+
+
+# Creem un llibre amb 0 exemplars
+meu_llibre = Llibre("Python per a tothom", 0)
+
+# Ara, si intentem prestar-lo, saltarà l'error que hem definit nosaltres:
+# meu_llibre.prestar()  # Això faria petar el programa si no ho posem dins d'un try...except
+
+# Com es combina amb el try...except que tu ja saps?
+# Aquí ve la màgia: com que tu has provocat l'error amb raise, el pots atrapar
+# exactament igual amb el try...except que ja coneixes!
+
+meu_llibre = Llibre("Python per a tothom", 0)
+
+try:
+    # Intentem prestar el llibre (aquí dins saltarà el nostre 'raise')
+    meu_llibre.prestar()
+
+except ValueError as e:
+    # El 'except' captura l'error que nosaltres mateixos hem llançat!
+    # La 'e' guarda el missatge que li hem posat al raise ("No queden exemplars...")
+    print(f"Vaja! S'ha produit un error: {e}")
+
+
 # LECTURA Y ESCRITURA DE ARCHIVOS
 
 # Python nos permite leer y escribir datos en archivos externos. Podemos abrir
