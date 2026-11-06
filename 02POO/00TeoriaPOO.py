@@ -49,6 +49,38 @@ print(vehcle2.matricula)  # Imprimeix "5678-XYZ"
 print(vehcle1.estat)      # Imprimeix "Disponible"
 
 
+# Valors per defecte als paràmetres del constructor (__init__)
+
+# Pots posar un valor per defecte directament a la definició del mètode. Si ho fas
+# així després el constructor no t'obliga a definir tu mateix el valor de
+# l'atribut en qüestió.
+
+# Opció A: Si ho fas així (Sense valor per defecte)
+class CompteBancari:
+    def __init__(self, titular, saldo):
+        self.titular = titular
+        self.saldo = saldo  # T'obliga a passar-li un saldo sí o sí
+# Si intentessis fer això, et donaria error (TypeError falta un argument):
+# compte1 = CompteBancari("Anna")
+# Aquí et demanaria obligatòriament posar un número cada vegada: compte1 = CompteBancari("Anna", 0.0).
+
+# Opció B: Amb valor per defecte (El que demana l'exercici 3)
+# Perquè puguis crear el compte posant només el titular (o el nom), pots assignar
+# un valor directament al paràmetre del constructor posant un = al costat:
+class CompteBancari:
+    # Posem saldo = 0.0 com a valor per defecte
+    def __init__(self, titular, saldo=0.0):
+        self.titular = titular
+        self.saldo = saldo  # Agafarà 0.0 si no li dius res més
+# Ara pots crear el compte de dues maneres totalment vàlides:
+# 1. Només amb el titular (agafarà 0.0 automàticament):
+compte_anna = CompteBancari("Anna")
+print(compte_anna.saldo)  # Imprimeix: 0.0
+# 2. O passant-li directament un saldo inicial si ja té diners:
+compte_pere = CompteBancari("Pere", 150.50)
+print(compte_pere.saldo)  # Imprimeix: 150.50
+
+
 # Mètodes (Funcions dins de les classes)
 
 # Els mètodes són funcions que viuen dins d'una classe i defineixen el comportament
@@ -137,3 +169,65 @@ print(cotxe2.quilometratge)  # Imprimeix: 5000 (crida al getter automàticament)
 cotxe2.quilometratge = 5200   # Funciona i actualitza!
 
 cotxe2.quilometratge = 3000   # Dispara el missatge d'error del setter!
+
+
+# HERENCIA
+
+# Imagina que tens una classe general (la classe pare o superclasse) amb
+# atributs i mètodes comuns, com per exemple Vehicle. En lloc de tornar a
+# escriure tot allò per a un Cotxe o una Furgoneta, fas que aquestes noves
+# classes (classes filles o subclasses) "heretin" directament tot el que
+# té el pare, i només afegeixis o modifiquis allò que tenen d'específic.
+
+# La sintaxi a Python (Amb exemples i comentaris)
+# Per fer que una classe filla hereti d'una classe pare, simplement posem
+# el nom del pare entre parèntesis al costat de la classe filla:
+# class Filla(Pare):.
+
+# 1. CLASSE PARE (Superclasse)
+# Té els atributs i mètodes generals que qualsevol vehicle compartirà.
+class Vehicle:
+    def __init__(self, matricula, marca):
+        self.matricula = matricula
+        self.marca = marca
+        self.estat = "Disponible"
+
+    def descriure(self):
+        return f"Vehicle {self.marca} amb matrícula {self.matricula}"
+
+# 2. CLASSE FILLA (Subclasse)
+# Posem (Vehicle) entre parèntesis per indicar que 'Cotxe' hereta de 'Vehicle'.
+class Cotxe(Vehicle):
+    def __init__(self, matricula, marca, num_portes):
+        # super() serveix per cridar el constructor de la classe pare (Vehicle)
+        # i així no hem de tornar a escriure self.matricula i self.marca a mà.
+        super().__init__(matricula, marca)
+
+        # Ara afegim l'atribut nou i exclusiu d'un cotxe
+        self.num_portes = num_portes
+
+    # Podem crear mètodes exclusius només per als cotxes
+    def obrir_maleter(self):
+        print(f"El maleter del cotxe {self.matricula} està obert.")
+
+
+# 3. UNA ALTRA CLASSE FILLA PER VEURE LA DIFERÈNCIA
+class Furgoneta(Vehicle):
+    def __init__(self, matricula, marca, capacitat_kg):
+        super().__init__(matricula, marca)  # Heretem del pare
+        self.capacitat_kg = capacitat_kg  # Atribut propi de la furgoneta
+
+# --- PROVEM LA HERÈNCIA ---
+
+# Creem un objecte de la classe filla 'Cotxe'
+cotxe1 = Cotxe("1234-ABC", "Seat", 5)
+
+# Fíxat: El cotxe pot utilitzar mètodes de la classe pare (Vehicle)
+# tot i que no els haguem escrit a la classe Cotxe!
+print(cotxe1.descriure())  # Imprimeix: Vehicle Seat amb matrícula 1234-ABC
+
+# I també pot utilitzar els seus propis mètodes exclusius:
+cotxe1.obrir_maleter()  # Imprimeix: El maleter del cotxe 1234-ABC està obert.
+
+# I té accés als seus atributs propis:
+print(f"Portes: {cotxe1.num_portes}")  # Imprimeix: Portes: 5
