@@ -112,3 +112,56 @@ SELECT MARCA, MODEL, QUILOMETRATGE,
     ELSE 'Molts quilòmetres'
   END AS TIPUS_KM
 FROM VEHICLES;
+
+
+# SUBCONSULTES
+
+# Una subconsulta no és res més que una consulta SQL dins d'una altra consulta SQL.
+# Imagina que necessites buscar una dada, però per trobar-la primer necessites
+# calcular una altra cosa prèvia. En comptes de fer dues peticions separades des
+# del teu programa en Python, li dius a la base de dades que ho resolgui tot d'un sol cop.
+# La subconsulta s'executa sempre primer, tancada entre parèntesis (), i el seu resultat
+# s'utilitza com a valor o filtre per a la consulta principal (query externa).
+
+# On s'acostumen a utilitzar? (Els 3 casos pràctics principals)
+
+# 1. Dins de la clàusula WHERE (Comparar amb un valor calculat)
+# És el cas més habitual. Imagina que vols saber quins vehicles tenen un quilometratge
+# superior a la mitjana de tota la flota. No saps quin nombre és la mitjana, així
+# que deixes que la subconsulta ho calculi:
+
+SELECT MARCA, MODEL, QUILOMETRATGE
+FROM VEHICLES
+WHERE QUILOMETRATGE > (SELECT AVG(QUILOMETRATGE) FROM VEHICLES);
+# Què passa aquí? Primer s'executa el SELECT AVG(...) (la subconsulta) i després la
+# consulta principal filtra els cotxes que superen aquest nombre.
+
+# 2. Amb l'operador IN (Filtrar a partir d'una llista d'IDs)
+# Molt útil quan vols buscar registres que coincideixen amb un grup de dades d'una
+# altra taula. Per exemple, vols saber el nom de tots els conductors que han fet
+# algun manteniment o reserva (o que han fet una reserva d'un cotxe concret):
+
+SELECT NOM
+FROM CONDUCTORS
+WHERE CONDUCTOR_ID IN (
+    SELECT CONDUCTOR_ID
+    FROM RESERVES
+    WHERE ESTAT_RESERVA = 'ACTIVA'
+);
+# Què passa aquí? La subconsulta treu una llista d'IDs de conductors amb reserves
+# actives, i el IN selecciona els conductors de la taula principal que estan
+# en aquesta llista.
+
+# Regla d'or de les subconsultes:
+# Si la subconsulta retorna un sol valor (com un MAX(), un MIN() o un AVG()),
+# pots fer servir operadors normals com >, <, = o <>.
+# Si la subconsulta retorna múltiples files (una llista de valors), has de fer
+# servir operadors de conjunts com IN, ANY o ALL.
+
+# Resum de conceptes clau a recordar:
+
+# cursor.execute(sql, valors): Executa l'ordre SQL protegit contra injeccions.
+# connexio.commit(): Obligatori a INSERT, UPDATE i DELETE. Si te n'oblides,
+# Python executarà el codi però la base de dades no desarà els canvis.
+# cursor.fetchall(): S'utilitza només al SELECT per recollir les dades a
+# una llista de tupla a Python.
