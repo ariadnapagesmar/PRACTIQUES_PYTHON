@@ -192,6 +192,24 @@ def crear_conductor(conductor: ConductorModel):
     # Retornem un missatge i l'ID creat (equivalent al 201 Created)
     return {"estat": "ok", "conductor_id": nou_id, "missatge": "Conductor creat correctament"}
 
+# AMB EL MÈTODE D'AMUNT DESPRÉS HAS DE INSERIR LES DADES QUE VOLS AFEGIR DESDE EL /DOCS
+# SI VOLS FER-HO D'UN ALTRE MANERA, EXISTEIX EL: REQUESTS
+
+import requests
+
+# Les dades que vols enviar (el teu "constructor" o model)
+noves_dades = {
+    "nom": "Carles Puig",
+    "carnet": "12345678Z",
+    "telefon": "600112233"
+}
+
+# Fem la petició POST enviant el diccionari a l'argument `json=`
+resposta = requests.post("http://127.0.0.1:8000/conductors", json=noves_dades)
+
+print(resposta.status_code)  # Hauria de retornar 201
+print(resposta.json())       # Retornarà el missatge d'èxit i l'ID
+
 
 # =====================================================================
 # 4. RUTES PUT (UPDATE) i DELETE (DELETE) AMB FASTAPI
@@ -300,3 +318,54 @@ def llistar_vehicles():
 # uvicorn main:app --reload
 # Obre al navegador http://127.0.0.1:8000/vehicles. Hauries de veure els
 # teus vehicles en JSON.
+
+
+# La regla d'or: Paràmetre de ruta (/recurs/{id}) vs Query Parameter (/recurs?filtre=x)
+
+# 1. Quan fas servir les claus { } a l'URL (Paràmetre de ruta)
+
+# Quan s'utilitza: Quan estàs buscant, actualitzant o eliminant un element
+# concret i únic del qual saps l'ID (com un vehicle concret, un conductor
+# específic o una reserva exacta).
+
+# Com s'escriu al codi: @app.get("/vehicles/{vehicle_id}")
+# Com s'escriu a l'URL: /vehicles/1 o /vehicles/5
+
+# Pensa-hi així: És com donar l'adreça exacta d'una casa amb el número de carrer.
+# Vas directe a aquell element.
+
+# 2. Quan fas servir l'interrogant ? (Query Parameter)
+
+# Quand s'utilitza: Quan vols filtrar, ordenar o buscar llistats segons alguna
+# condició opcional (per exemple, filtrar els vehicles que estan 'DISPONIBLE',
+# o ordenar per quilòmetres).
+
+# Com s'escriu al codi:
+    @app.get("/vehicles")
+    def llistar_vehicles(estat: str):  # Sense claus a l'URL!
+
+# Com s'escriu a l'URL: /vehicles?estat=DISPONIBLE
+
+# Pensa-hi així: És com anar a una tenda i demanar: "Ensenya'm samarretes, però
+# que siguin de color vermell". El ? actua com un filtre sobre un llistat.
+
+# I llavors... quan has d'anar al /docs?
+# La resposta curta: Utilitza sempre el /docs mentre estiguis programant i
+# provant el teu projecte.
+
+# Per què et recomano utilitzar sempre el /docs?
+# Et treu tota la feina bruta: No t'has de preocupar de si porta una barra
+# inclinada (/), un interrogant (?) o si has d'enviar un JSON pel cos.
+# El /docs construeix els enllaços automàticament per tu.
+# És el teu xicotet xafat de proves: Si cliques "Try it out", veuràs exactament
+# quina URL s'està construint i quin codi d'error o resposta et retorna l'API
+# al moment..
+
+# Resum visual ràpid per triar:
+# Necessites un element concret per ID? -> Ruta amb claus: /vehicles/{id}
+# (o fas servir el /docs).
+# Necessites filtrar o buscar per una propietat (estat, nom...)? -> Query parameter
+# amb interrogant: /vehicles?estat=... (o fas servir el /docs).
+# Vols crear dades noves (POST)? -> No va a l'URL, va pel cos (Body) de la
+# petició -> Usa directament el /docs i oblida't de patir per l'URL!
+
