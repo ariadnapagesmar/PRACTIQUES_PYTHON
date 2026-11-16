@@ -1,0 +1,167 @@
+<!--HTML (lliçons 1.1 a 1.12)
+
+Exercici 1: El text de la pàgina
+
+Crea pelis.html amb l’esquelet i, dins del <body>, un <h1> amb el títol de
+la pàgina, un <p> que expliqui què és i un <h2> amb el subtítol
+«Les meves preferides».
+Lliçons 1.2 i 1.3.
+Has de veure: tres blocs de text i el títol a la pestanya.
+
+Exercici 2: Llista i enllaç
+
+Sota el subtítol, afegeix una llista amb 3 pel·lícules. Una d’elles amb el
+títol en negreta. Afegeix un enllaç a una web on es pugui veure alguna d’elles.
+Lliçons 1.4, 1.5, 1.6 i 1.7.
+Pista: la negreta va dins del <li>.
+
+Exercici 3: La taula
+
+Sota la llista, fes una taula amb capçalera (Títol, Any, Director) i
+3 files de dades.
+Lliçó 1.10, que va en 3 passos: fes-ho en aquest ordre i refresca entre cada un.
+Pista: totes les files han de tenir el mateix nombre de cel·les.
+
+Exercici 4: El formulari
+
+Afegeix un formulari amb: un camp de text (títol), un camp de número (any),
+un desplegable (gènere, amb 3 opcions) i un botó «Afegir».
+Lliçons 1.11 i 1.12, que van camp a camp. Fes-ho també així.
+Pista: cada camp porta un <label> i un id coincident. Poseu cada parella
+dins d'un <div> perquè quedin en línies separades.
+Encara no ha de fer res en prémer el botó.
+-->
+
+<!DOCTYPE html>
+<html lang="ca">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La meva pagina web</title>
+    <link rel="stylesheet"  href="02peliculesCSS.css">
+  </head>
+  <body>
+
+    <h1>Llistat de pel·lícules</h1>
+    <p id="paragraf">Pàgina web on llistarem pel·lícules de tots els tipus.</p>
+    <p>Busca quina pel·lícula veure aquesta nit.</p>
+    <p id="missatge">Carregant missatge...<p>
+    <button type="button" id="generar">Generar</button>
+    <h2>Les meves preferides</h2>
+    <ul>
+        <li>The Shining</li>
+        <li><strong>Wall-E</strong> -> <a href="https://es.wikipedia.org/wiki/WALL%C2%B7E">Més informació</a></li>
+        <li>The Wolf of Wall Street</li>
+    </ul>
+    <h4>Taula colorida</h4>
+    <table>
+        <thead id="theadnormal">
+        <tr>
+            <th>Títol</th>
+            <th>Any</th>
+            <th>Director</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr id="orange">
+            <td>Inglourious Basterds</td>
+            <td>2009</td>
+            <td>Quentin Tarantino</td>
+        </tr>
+        <tr id="yellow">
+            <td>The Fantastic 4</td>
+            <td>2025</td>
+            <td>Matt Shakman</td>
+        </tr>
+        <tr id="green">
+            <td>The Blair Witch Project</td>
+            <td>1999</td>
+            <td>Daniel Myrick y Eduardo Sánchez</td>
+        </tr>
+        <tr id="blue">
+            <td>Coco</td>
+            <td>2017</td>
+            <td>Lee Unkrich</td>
+        </tr>
+        <tr id="indigo">
+            <td>The Fault in Our Stars</td>
+            <td>2014</td>
+            <td>Josh Boone</td>
+        </tr>
+        <tr id="purple">
+            <td>Fight Club</td>
+            <td>1999</td>
+            <td>David Fincher</td>
+        </tr>
+        </tbody>
+    </table>
+    <h4>Taula separada per clàssiques i modernes</h4>
+    <table>
+        <thead>
+        <tr>
+            <th>Títol</th>
+            <th>Any</th>
+            <th>Director</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="classica">
+            <td>Inglourious Basterds</td>
+            <td>2009</td>
+            <td>Quentin Tarantino</td>
+        </tr>
+        <tr class="moderna">
+            <td>The Fantastic 4</td>
+            <td>2025</td>
+            <td>Matt Shakman</td>
+        </tr>
+        <tr class="classica">
+            <td>The Blair Witch Project</td>
+            <td>1999</td>
+            <td>Daniel Myrick y Eduardo Sánchez</td>
+        </tr>
+        <tr class="moderna">
+            <td>Coco</td>
+            <td>2017</td>
+            <td>Lee Unkrich</td>
+        </tr>
+        <tr class="moderna">
+            <td>The Fault in Our Stars</td>
+            <td>2014</td>
+            <td>Josh Boone</td>
+        </tr>
+        <tr class="classica">
+            <td>Fight Club</td>
+            <td>1999</td>
+            <td>David Fincher</td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <div>
+        <label for="titol">Titol: </label>
+        <input type="text" id="titol">
+    </div>
+
+    <div>
+        <label for="any">Any: </label>
+        <input type="text" id="any">
+    </div>
+
+    <div>
+        <label for="genere">Gènere: </label>
+        <select id="genere">
+            <option value="COMEDIA">Comèdia</option>
+            <option value="TERROR">Terror</option>
+            <option value="DRAMA">Drama</option>
+            <option value="DIBUIXOS">Dibuixos animats</option>
+            <option value="ROMANTICA">Romàntica</option>
+            <option value="ACCIO">Acció</option>
+        </select>
+    </div>
+
+    <button type="button">Afegir</button>
+
+    <script src="02peliculesJS.js"></script>
+  </body>
+</html>

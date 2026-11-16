@@ -1,0 +1,84 @@
+/*CSS (lliçons 2.1 a 2.8)
+
+Exercici 5: Primer estil
+
+Crea estils.css, connecta'l i fes: títol amb fons fosc, lletra blanca i centrat;
+paràgrafs en gris; un id al primer paràgraf perquè sigui d'un altre color.
+Lliçons 2.1 a 2.4.
+Pista: un selector per etiqueta (h1, p) i un per id (#).
+
+Exercici 6: Taula i classes
+
+Dona vores, espai i fons de capçalera a la taula. Després crea dues classes (per
+exemple .clàssica i .moderna) amb colors diferents, i aplica-les a les files de
+la taula segons l'any de la pel·lícula.
+Lliçons 2.5, 2.7 i 2.8.
+Pista: no oblidis border-collapse: collapse. Les classes van a l'atribut class
+de cada <tr>.
+*/
+
+h1 {
+    text-align: center;
+    background-color: black;
+    color: white;
+}
+
+p {
+    color: grey;
+}
+
+#paragraf {
+    color: blue;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+#theadnormal {
+    background-color: red;
+}
+
+#orange {
+    background-color: orange;
+}
+
+#yellow {
+    background-color: yellow;
+}
+
+#green {
+    background-color: green;
+}
+
+#blue {
+    background-color: blue;
+}
+
+#indigo {
+    background-color: indigo;
+}
+
+#purple {
+    background-color: purple;
+}
+
+thead {
+    background-color: grey;
+    color: white;
+}
+
+.classica {
+    background-color: beige;
+    font-family: Nimbus Roman;
+}
+
+.moderna {
+    background-color: chartreuse;
+    font-family: "Courier 10 Pitch";
+}

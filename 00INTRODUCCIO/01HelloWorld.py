@@ -159,7 +159,7 @@ for i in range(10):
 frutas2 = ["manzana", "banana", "naranja"]
 
 print(frutas2[0])  # Imprime "manzana"
-print(frutas2[1])  # Imprime "banana"
+print(frutas2[1])  #x Imprime "banana"
 print(frutas2[2])  # Imprime "naranja"
 
 

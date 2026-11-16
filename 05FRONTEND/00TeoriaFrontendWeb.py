@@ -42,21 +42,21 @@
 # 1.1 L'esquelet de tota pagina
 # ---------------------------------------------------------------------
 #
-#   <!DOCTYPE html>
-#   <html lang='ca'>
-#     <head>
-#       <!-- Informacio que NO es veu a la pagina -->
-#       <meta charset='UTF-8'>
-#       <title>Gestor de flota</title>
-#       <link rel='stylesheet' href='estils.css'>   <!-- connecta el CSS -->
-#     </head>
-#     <body>
-#       <!-- Tot el que SI es veu va aqui dins -->
-#       <h1>Gestor de flota</h1>
-#
-#       <script src='app.js'></script>   <!-- connecta el JS, al FINAL -->
-#     </body>
-#   </html>
+<!DOCTYPE html>
+<html lang='ca'>
+ <head>
+   <!-- Informacio que NO es veu a la pagina -->
+   <meta charset='UTF-8'>
+   <title>Gestor de flota</title>
+   <link rel='stylesheet' href='estils.css'>   <!-- connecta el CSS -->
+ </head>
+ <body>
+   <!-- Tot el que SI es veu va aqui dins -->
+   <h1>Gestor de flota</h1>
+
+   <script src='app.js'></script>   <!-- connecta el JS, al FINAL -->
+ </body>
+</html>
 #
 # Per que el <script> va al final del body? Perque el navegador llegeix
 # la pagina de dalt a baix. Si el JS s'executa abans que existeixin els
