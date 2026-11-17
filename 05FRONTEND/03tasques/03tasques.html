@@ -1,0 +1,76 @@
+<!--HTML (lliçons 1.1 a 1.12)
+
+Exercici 11: L’esquelet de l’agenda
+
+Crea tasques.html amb l’esquelet. Dins del <body> posa un <h1> («Les meves tasques»),
+un <div> que agrupi un <h2> («Pendents») i una llista <ul> amb 3 tasques, i un segon
+<div> amb un <h2> («Afegir tasca») i un formulari. El formulari ha de tenir: un
+camp de text (tasca), un desplegable de prioritat (alta, mitjana, baixa), un camp
+de data (límit) i un botó «Afegir».
+Lliçons 1.2, 1.3, 1.5, 1.8, 1.11 i 1.12.
+Pista: cada camp porta el seu <label> i un id coincident, i cada parella va dins
+d’un <div>.
+Has de veure: els dos blocs, i que el desplegable i el calendari funcionen.
+
+Exercici 12: Ids i classes pensades per al CSS
+
+Sense afegir cap estil encara, prepara l’HTML. Posa un id a la llista (llista),
+un a la <div> del formulari (formulari) i un altre al <p> que escriuràs ara a
+sota del botó (missatge). A cada <li> de la llista, posa-hi una class segons la
+seva prioritat (alta, mitjana o baixa).
+Lliçó 1.9.
+Pista: els ids són únics, les classes es poden repetir.
+Has de veure: res de nou a la pàgina. Aquest exercici és preparar el terreny.-->
+
+<!DOCTYPE html>
+<html lang="ca">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La meva pagina web</title>
+    <link rel="stylesheet" href="03tasques.css">
+  </head>
+  <body>
+    <h1>Les meves tasques</h1>
+    <div class="targeta">
+        <h2>Pendents</h2>
+        <ul id="llista_pendents">
+            <li class="alta">Fer la compra</li>
+            <li class="baixa">Escombrar el pis</li>
+            <li class="mitjana">Pagar més pràctiques de cotxe</li>
+            <li class="feta">Activar la targeta de crèdit</li>
+        </ul>
+    </div>
+    <div class="targeta">
+        <h2>Afegir tasca</h2>
+        <div id="afegir_tasca">
+            <label for="nova_tasca">Tasca: </label>
+            <input type="text" id="nova_tasca">
+        </div>
+        <br>
+        <div>
+            <label for="prioritat">Prioritat: </label>
+            <select id="prioritat">
+                <option value="alta">Alta</option>
+                <option value="mitjana">Mitjana</option>
+                <option value="baixa">Baixa</option>
+            </select>
+        </div>
+        <br>
+        <div>
+            <label for="data_limit">Data límit: </label>
+            <input type="date" id="data_limit">
+        </div>
+        <br>
+        <button id="btn_afegir">Afegir</button>
+        <p id="missatge"></p>
+    </div>
+    <div class="targeta">
+        <h2>Llistar amb JavaScript</h2>
+        <ul id="pintar_llista">
+
+        </ul>
+    </div>
+    <script src="03tasques.js"></script>
+  </body>
+</html>

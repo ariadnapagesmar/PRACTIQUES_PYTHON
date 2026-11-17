@@ -1,0 +1,53 @@
+/*CSS (lliçons 2.1 a 2.8)
+
+Exercici 13: Targetes per a cada bloc
+
+Connecta tasques.css. Fes una classe .targeta amb vora, padding, margin i una amplada
+de 400px, i aplica-la als dos <div> principals. Posa al <h1> un fons de color i el
+text centrat.
+Lliçons 2.1 a 2.6.
+Pista: la classe va a l’atribut class del <div>.
+Has de veure: dos quadres amb aire per dins i separats entre ells.
+
+Exercici 14: Colors per prioritat
+
+Dona un color de text diferent a cada classe .alta, .mitjana i .baixa. Afegeix també
+una classe .feta amb el text ratllat (text-decoration: line-through) i de color gris,
+i aplica-la a una de les tasques per provar-ho. Fes que el #missatge surti en lila.
+Lliçons 2.3, 2.4 i 2.8.
+Pista: text-decoration és una propietat nova, però s’escriu igual que totes:
+propietat: valor;.
+Has de veure: tres colors a la llista i una tasca ratllada.*/
+
+h1 {
+    text-align: center;
+    background-color: pink;
+    color: aliceblue;
+}
+.targeta{
+    border: 1px solid dimgray;
+    padding: 30px;
+    margin: 30px;
+    width: 400px;
+}
+
+.alta  {
+    color: red;
+}
+
+.mitjana {
+    color: #c1a500;
+}
+
+.baixa {
+    color: green;
+}
+
+.feta {
+    color: grey;
+    text-decoration: line-through;
+}
+
+#missatge {
+    color: purple;
+}

@@ -50,7 +50,31 @@ for (const pelicula of pelicules) {
 
 let missatge = document.getElementById('missatge')
 const botoGenerar = document.getElementById('generar')
+let num_pelis = pelicules.length
 
 botoGenerar.addEventListener('click', () => {
-    missatge.textContent = 'Has fet clic!'
+    missatge.textContent = 'Has fet clic! Nombre total de pel·lícules: ' + num_pelis
 })
+
+const botoAfegir = document.getElementById('btn_afegir')
+const titolAfegir = document.getElementById('titol')
+let missatgeAfegir = document.getElementById('missatge_afegir')
+
+botoAfegir.addEventListener('click', () => {
+    const titolUsuari = titolAfegir.value
+    missatgeAfegir.textContent = 'Títol pel·lícula: ' + titolUsuari
+})
+
+const bodyJS = document.getElementById('body_js')
+
+for (const peli of pelicules) {
+
+    // si l'any és més gran que 2000, escriu 'moderna', sinò escriu 'clàssica'
+    const classeCSS  = peli.any > 2000 ? 'moderna' : 'classica'
+
+    bodyJS.innerHTML += `<tr class="${classeCSS}"> 
+        <td>${peli.titol}</td>
+        <td>${peli.any}</td>
+        </tr>`
+
+}

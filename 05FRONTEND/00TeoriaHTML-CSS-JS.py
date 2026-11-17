@@ -866,3 +866,18 @@
 #
 # REGLA D'OR: quan alguna cosa no funciona, obre F12 i mira la consola
 # abans de res.
+
+# PREVISUALITZAR PER VEURE LA PÀGINA DESDE EL LOCALHOST
+
+# Usar un servidor local ligero desde la terminal (Con Firefox)
+
+# Si prefieres verlo en Firefox a pantalla completa, puedes lanzar un
+# servidor web con el propio Python que ya tienes abierto en tu proyecto,
+# aunque tendrás que pulsar F5 en Firefox para recargar tras guardar (Ctrl + S):
+
+# Abre la pestaña Terminal en la parte inferior izquierda de PyCharm
+# (el icono >_).
+
+# Ejecuta este comando para servir la carpeta actual:
+
+# python3 -m http.server 8000
