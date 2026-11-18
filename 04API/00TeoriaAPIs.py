@@ -369,3 +369,118 @@ def llistar_vehicles():
 # Vols crear dades noves (POST)? -> No va a l'URL, va pel cos (Body) de la
 # petició -> Usa directament el /docs i oblida't de patir per l'URL!
 
+# ==============================================================================
+# GUIA RÀPIDA DE TEORIA: CRUD AMB FASTAPI I MARIADB + GESTIÓ D'ERRORS (HTTP)
+# ==============================================================================
+
+# RESUM DELS CODIS D'ESTAT HTTP PER A CADA RUTA DEL CRUD:
+# ------------------------------------------------------------------------------
+# 1. GET (Llistar / Buscar)
+#    - 404 Not Found: Si busques un element per ID/matrícula i no existeix.
+#    - 500 Internal Server Error: Si peta la connexió o la base de dades.
+#
+# 2. POST (Crear / Donar d'alta)
+#    - 400 Bad Request: Si les dades enviades no tenen sentit lògic (ex: km negatius).
+#    - 409 Conflict: Si intentes crear una clau duplicada (ex: matrícula repetida).
+#    - 500 Internal Server Error: Error tècnic general de la base de dades.
+#
+# 3. PUT (Modificar / Actualitzar)
+#    - 404 Not Found: Si intentes modificar un element que no existeix.
+#    - 400 Bad Request: Si les dades d'actualització són incorrectes.
+#    - 500 Internal Server Error: Error tècnic de la base de dades.
+#
+# 4. DELETE (Eliminar / Donar de baixa)
+#    - 404 Not Found: Si intentes esborrar un element que no existeix.
+#    - 500 Internal Server Error: Error tècnic (ex: restriccions de claus foranes).
+# ==============================================================================
+
+
+# ==============================================================================
+# PLANTILLA PRÀCTICA D'UN CRUD COMPLET AMB GESTIÓ D'ERRORS
+# ==============================================================================
+
+from fastapi import FastAPI, HTTPException
+import mysql.connector
+
+app = FastAPI()
+
+
+def connectar_bd():
+    return mysql.connector.connect(
+        host="localhost", user="root", password="", database="flota_empresa_bd"
+    )
+
+
+# --- 1. GET: LLISTAR TOTS ELS VEHICLES ---
+@app.get("/vehicles")
+def llistar_vehicles():
+    try:
+        connexio = connectar_bd()
+        cursor = connexio.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM VEHICLES")
+        vehicles = cursor.fetchall()
+        return vehicles
+    except mysql.connector.Error as e:
+        # Error 500 per fallades tècniques del servidor/BD
+        raise HTTPException(
+            status_code=500, detail=f"Error intern de base de dades: {e}"
+        )
+    finally:
+        cursor.close()
+        connexio.close()
+
+
+# --- 2. POST: CREAR / DONAR D'ALTA UN VEHICLE ---
+# (Nota: Aquí s'assumeix un model Pydantic 'VehicleModel' previ)
+@app.post("/vehicles")
+def crear_vehicle(vehicle: dict):
+    try:
+        connexio = connectar_bd()
+        cursor = connexio.cursor()
+        sql = "INSERT INTO VEHICLES (MATRICULA, MARCA, MODEL, ESTAT, QUILOMETRATGE) VALUES (%s, %s, %s, %s, %s)"
+        valors = (
+            vehicle.get("matricula"),
+            vehicle.get("marca"),
+            vehicle.get("model"),
+            vehicle.get("estat"),
+            vehicle.get("quilometratge"),
+        )
+        cursor.execute(sql, valors)
+        connexio.commit()
+        return {"missatge": "Vehicle creat correctament"}
+
+    except mysql.connector.Error as e:
+        if e.errno == 1062:
+            # Error 409 Conflict per duplicats (matrícula repetida)
+            raise HTTPException(
+                status_code=409, detail="Aquesta matrícula ja existeix a la base de dades"
+            )
+        else:
+            # Error 500 per a la resta d'errors de BD
+            raise HTTPException(status_code=500, detail=f"Error de servidor: {e}")
+    finally:
+        cursor.close()
+        connexio.close()
+
+
+# --- 3. DELETE: ELIMINAR / DONAR DE BAIXA UN VEHICLE ---
+@app.delete("/vehicles/{vehicle_id}")
+def eliminar_vehicle(vehicle_id: int):
+    try:
+        connexio = connectar_bd()
+        cursor = connexio.cursor()
+        cursor.execute("DELETE FROM VEHICLES WHERE id = %s", (vehicle_id,))
+        connexio.commit()
+
+        # Comprovem si s'ha esborrat alguna fila realment
+        if cursor.rowcount == 0:
+            # Error 404 Not Found si l'ID no existia
+            raise HTTPException(status_code=404, detail="Vehicle no trobat")
+
+        return {"missatge": "Vehicle eliminat correctament"}
+
+    except mysql.connector.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error de servidor: {e}")
+    finally:
+        cursor.close()
+        connexio.close()

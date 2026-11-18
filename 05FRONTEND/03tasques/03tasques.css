@@ -51,3 +51,30 @@ h1 {
 #missatge {
     color: purple;
 }
+
+#missatge_pendents {
+    color: mediumblue;
+}
+
+.mode_fosc {
+    background-color: black;
+    color: white;
+    h1 {
+        background-color: white;
+        color: black;
+    }
+}
+
+.mode_clar {
+    background-color: white;
+    color: black;
+    h1 {
+        text-align: center;
+        background-color: pink;
+        color: aliceblue;
+    }
+}
+
+#mode_vista {
+    margin-left: 30px;
+}

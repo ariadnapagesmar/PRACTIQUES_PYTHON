@@ -39,7 +39,7 @@
 // Lliçons 3.4 i 3.11.
 // Pista: compara el valor amb === i un text buit ''. Pensa que el return dins
 // d’una funció també serveix per sortir abans.
-// Has de veure: error en vermell si prems «Afegir» amb la caixa buida, i res
+// Has de veure: error en lila si prems «Afegir» amb la caixa buida, i res
 // d’error si l’omples.
 //
 // Exercici 19: El comptador viu
@@ -62,7 +62,7 @@
 // Lliçons 3.9, 3.10 i 3.14.
 // Pista: el <body> també pot tenir un id perquè el trobis amb getElementById.
 // Has de veure: totes les tasques es ratllen d’un clic, i el mode fosc va i ve
-// cada vegada que premes el botó.
+// cada vegada que prems el botó.
 
 const tasques = [
     {tasca: 'Revisió mèdica anual', prioritat: 'mitjana', feta: false},
@@ -74,50 +74,74 @@ const tasques = [
 function comptarPendents(array_tasques) {
     let comptador_false = 0
     for (const tasca of array_tasques) {
-        if (tasca.feta == false) {
+        if (tasca.feta === false) {
             comptador_false += 1
         }
     }
 
-    return console.log('Total de tasques sense completar: ' + comptador_false)
+    return comptador_false
 }
 
-comptarPendents(tasques)
+console.log('Total de tasques sense completar: ' + comptarPendents(tasques))
 
 const llistaPintar = document.getElementById('pintar_llista')
+let missatgePendents = document.getElementById('missatge_pendents')
 
 function pintarLlista(array_tasques) {
     llistaPintar.innerHTML = ''
     for (const tasca of array_tasques) {
         let prioritat = tasca.prioritat
-        if (tasca.feta == true) {
+        if (tasca.feta === true) {
             prioritat += " feta"
             llistaPintar.innerHTML += `<li class="${prioritat}">${tasca.tasca}</li>`
         } else {
             llistaPintar.innerHTML += `<li class="${prioritat}">${tasca.tasca}</li>`
         }
     }
+    missatgePendents.innerHTML = `Pendents: ${comptarPendents(tasques)} de ${tasques.length}`
 }
-
-// Exercici 17: Afegir una tasca nova
-//
-// Fes que el botó «Afegir» llegeixi el text i la prioritat del formulari, creï
-// un objecte nou amb feta: false, l’afegeixi a l’array i torni a pintar la llista.
-// Lliçons 3.6, 3.8, 3.10, 3.11 i 3.12.
-// Pista: si repintes amb += sense buidar abans, les tasques es dupliquen. Mira
-// la diferència entre = i += de la 3.12 i decideix on has de posar un
-// innerHTML = '' a la funció.
-// Has de veure: la tasca nova apareix al final de la llista, amb el seu color.
 
 const botoAfegir = document.getElementById('btn_afegir')
 const tascaAfegir = document.getElementById('nova_tasca')
 const prioritatAfegir = document.getElementById('prioritat')
+let missatge = document.getElementById('missatge')
 
 botoAfegir.addEventListener('click', () => {
     const novaTasca = tascaAfegir.value
-    const novaPrioritat = prioritatAfegir.value
-    tasques.push({tasca: novaTasca, prioritat: novaPrioritat, feta: false})
-    pintarLlista(tasques)
+    if (novaTasca === '') {
+        missatge.innerHTML = "Error. No pots afegir un text buit."
+    } else {
+        const novaPrioritat = prioritatAfegir.value
+        tasques.push({tasca: novaTasca, prioritat: novaPrioritat, feta: false})
+        missatge.innerHTML = ''
+        pintarLlista(tasques)
+    }
 })
 
 pintarLlista(tasques)
+
+const botoCompletar = document.getElementById('completar_tasques')
+
+botoCompletar.addEventListener('click', () => {
+    for (const tasca of tasques) {
+        tasca.feta = true
+    }
+    pintarLlista(tasques)
+})
+
+let botoMode = document.getElementById('mode_vista')
+const bodyHTML = document.getElementById('body')
+
+botoMode.addEventListener('click', () => {
+    if (botoMode.innerText === 'Mode fosc') {
+        bodyHTML.classList.remove('mode_clar')
+        bodyHTML.classList.add('mode_fosc')
+        botoMode.innerText = 'Mode clar'
+    } else {
+        bodyHTML.classList.remove('mode_fosc')
+        bodyHTML.classList.add('mode_clar')
+        botoMode.innerText = 'Mode fosc'
+    }
+
+})
+
