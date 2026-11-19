@@ -1,0 +1,50 @@
+<!--Bloc 1: Veure que parlen (exercicis 1-3)
+
+Exercici 1: La primera connexió
+
+Fes un HTML buit amb un <script> que cridi GET /vehicles i mostri el resultat per
+la consola (F12) amb console.log(vehicles).
+👉 Objectiu: comprovar que no hi ha error de CORS i veure l’estructura del JSON.
+
+Exercici 2: Comptar
+Mostra a la pàgina (dins d’un <p>) el text: “Hi ha X vehicles a la flota”. Pista:
+una llista té .length.
+
+Exercici 3: Llista simple
+Pinta els vehicles en una <ul>, un <li> per vehicle, amb el format
+Matrícula - Marca Model. És l’exemple de la teoria, però escrit per tu sense mirar.-->
+
+<!DOCTYPE html>
+<html lang="ca">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La meva pagina web</title>
+    <link rel="stylesheet" href=""> <!-- connecta el CSS -->
+  </head>
+  <body>
+    <!-- Tot el que SÍ es veu va aquí dins -->
+    <h1>Gestor de flota</h1>
+
+    <p id="length_vehicles"></p>
+
+    <ul id="llista_vehicles"></ul>
+
+    <table>
+      <thead>
+          <tr>
+            <th>Matrícula</th>
+            <th>Marca</th>
+            <th>Model</th>
+            <th>Estat</th>
+            <th>Quilometratge</th>
+          </tr>
+      </thead>
+      <tbody id="taula_vehicles">
+
+      </tbody>
+    </table>
+
+    <script src="index.js"></script> <!-- connecta el JS, al FINAL -->
+  </body>
+</html>

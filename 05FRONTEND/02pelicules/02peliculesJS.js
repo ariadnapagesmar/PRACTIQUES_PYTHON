@@ -50,10 +50,10 @@ for (const pelicula of pelicules) {
 
 let missatge = document.getElementById('missatge')
 const botoGenerar = document.getElementById('generar')
-let num_pelis = pelicules.length
+let numPelis = pelicules.length
 
 botoGenerar.addEventListener('click', () => {
-    missatge.textContent = 'Has fet clic! Nombre total de pel·lícules: ' + num_pelis
+    missatge.textContent = 'Has fet clic! Nombre total de pel·lícules: ' + numPelis
 })
 
 const botoAfegir = document.getElementById('btn_afegir')
