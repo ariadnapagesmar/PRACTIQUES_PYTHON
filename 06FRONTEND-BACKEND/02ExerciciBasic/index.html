@@ -1,0 +1,54 @@
+<!--Bloc A: Repetir de zero (1-3)
+
+1. Començar de zero
+ Crea un index.html i un index.js nous i buits. Fes que la consola mostri la llista
+ de vehicles. Sense mirar el codi que ja tens.
+
+2. Disponibles
+ Mostra en un <p>: "Hi ha X vehicles disponibles de Y". Pista: compta amb una
+ variable que sumi dins del bucle.
+
+3. Només els ocupats
+ Pinta en una llista només la matrícula dels vehicles amb estat OCUPAT.
+-->
+
+<!DOCTYPE html>
+<html lang="ca">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La meva pagina web</title>
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <h1>Llista vehicles</h1>
+
+    <p id="p_vehicles_disponibles"></p>
+    <p id="p_vehicles_taller"></p>
+
+    <h4>Llista vehicles ocupats</h4>
+    <ul id="ul_vehicles_ocupats">
+
+    </ul>
+
+    <h4>Taula quilometratge</h4>
+    <div>
+        <label for="input_taula">Marca: </label>
+        <input type="text" id="input_taula">
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Matrícula</th>
+            <th>Marca</th>
+            <th>Quilometratge</th>
+        </tr>
+        </thead>
+        <tbody id="tbody_vehicles">
+
+        </tbody>
+    </table>
+    <script src="index.js"></script>
+  </body>
+</html>

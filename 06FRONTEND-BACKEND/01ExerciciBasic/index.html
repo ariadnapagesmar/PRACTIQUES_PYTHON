@@ -20,16 +20,26 @@ Matrícula - Marca Model. És l’exemple de la teoria, però escrit per tu sens
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La meva pagina web</title>
-    <link rel="stylesheet" href=""> <!-- connecta el CSS -->
+    <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <!-- Tot el que SÍ es veu va aquí dins -->
+
     <h1>Gestor de flota</h1>
 
     <p id="length_vehicles"></p>
 
     <ul id="llista_vehicles"></ul>
 
+    <div>
+      <label for="estat_taula">Estat vehicle: </label>
+      <select name="estat_taula" id="estat_taula">
+        <option value="Tots">Tots</option>
+        <option value="DISPONIBLE">DISPONIBLE</option>
+        <option value="OCUPAT">OCUPAT</option>
+        <option value="EN TALLER">EN TALLER</option>
+      </select>
+    </div>
+    <br>
     <table>
       <thead>
           <tr>
@@ -44,7 +54,9 @@ Matrícula - Marca Model. És l’exemple de la teoria, però escrit per tu sens
 
       </tbody>
     </table>
+    <p id="missatge_error"></p>
+    <button id="btn_refrescar"> Refresca la taula </button>
 
-    <script src="index.js"></script> <!-- connecta el JS, al FINAL -->
+    <script src="index.js"></script>
   </body>
 </html>
