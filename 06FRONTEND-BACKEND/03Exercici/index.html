@@ -1,0 +1,51 @@
+
+<!--Bloc 1: Veure les dades (1-4)
+
+1. 🐍🌐 La primera ruta
+ Al backend, fes GET /manteniments que retorni tots els manteniments. Comprova-ho
+ primer al navegador (http://127.0.0.1:8000/manteniments) i després amb console.log
+ al frontend.
+ 👉 Fixa't en com arriben el COST (un número) i la DATA_MANTENIMENT (un text
+ tipus "2026-03-10").
+
+2. 🌐 Taula de manteniments
+ Pinta'ls en una taula amb Descripció, Cost i Data. Fes servir la mateixa idea
+ de pintarTaula(llista) que ja coneixes.
+
+3. 🌐 Cost total
+ Mostra en un <p>: "Cost total de manteniments: X €". Pista: variable que sumi
+ dins del bucle.
+
+4. 🌐 El més car
+ Mostra en un <p> la descripció i el cost del manteniment més car. Pista: guarda
+ en una variable el "millor fins ara" i compara a cada volta del bucle.
+-->
+
+<!DOCTYPE html>
+<html lang="ca">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La meva pagina web</title>
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <h4>Taula manteniments</h4>
+
+    <table>
+      <thead>
+      <tr>
+        <th>Descripció</th>
+        <th>Cost</th>
+        <th>Data manteniment</th>
+      </tr>
+      </thead>
+      <tbody id="tbody_manteniments">
+
+      </tbody>
+    </table>
+
+    <p id="p_cost"></p>
+    <script src="index.js"></script>
+  </body>
+</html>

@@ -40,6 +40,44 @@ def llistar_vehicles():
 
     return resultats
 
+# LLISTAR ELS CONDUCTORS
+@app.get("/conductors")
+def llistar_conductors():
+    connexio = None
+    cursor = None
+
+    try:
+        connexio = connectar_bd()
+        cursor = connexio.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM CONDUCTORS")
+        resultats = cursor.fetchall()
+    except mysql.connector.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error de servidor: {e}")
+    finally:
+        cursor.close()
+        connexio.close()
+
+    return resultats
+
+# LLISTAR ELS MANTENIMENTS
+@app.get("/manteniments")
+def llistar_manteniments():
+    connexio = None
+    cursor = None
+
+    try:
+        connexio = connectar_bd()
+        cursor = connexio.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM MANTENIMENTS")
+        resultats = cursor.fetchall()
+    except mysql.connector.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error de servidor: {e}")
+    finally:
+        cursor.close()
+        connexio.close()
+
+    return resultats
+
 # DONAR D'ALTA UN NOU VEHICLE
 class EstatVehicle(str, Enum):
     DISPONIBLE = "DISPONIBLE"
