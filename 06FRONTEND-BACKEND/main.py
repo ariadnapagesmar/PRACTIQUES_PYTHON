@@ -3,6 +3,7 @@ import mysql.connector
 from pydantic import BaseModel
 from enum import Enum
 from fastapi.middleware.cors import CORSMiddleware
+import datetime
 
 app = FastAPI()
 
@@ -68,7 +69,7 @@ def llistar_manteniments():
     try:
         connexio = connectar_bd()
         cursor = connexio.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM MANTENIMENTS")
+        cursor.execute("SELECT * FROM MANTENIMENTS JOIN VEHICLES USING (VEHICLE_ID)")
         resultats = cursor.fetchall()
     except mysql.connector.Error as e:
         raise HTTPException(status_code=500, detail=f"Error de servidor: {e}")
@@ -77,6 +78,29 @@ def llistar_manteniments():
         connexio.close()
 
     return resultats
+
+# CERCAR UN MANTENIMENT D'UN VEHICLE EN CONCRET
+@app.get("/manteniments/{vehicle_id}")
+def cercar_manteniment(vehicle_id: int):
+    connexio = None
+    cursor = None
+
+    try:
+        connexio = connectar_bd()
+        cursor = connexio.cursor(dictionary=True)
+        sql = "SELECT * FROM MANTENIMENTS WHERE VEHICLE_ID = %s"
+        cursor.execute(sql, (vehicle_id,))
+        resultat = cursor.fetchall()
+
+        if not resultat:
+            raise HTTPException(status_code=404, detail=f"Vehicle {vehicle_id} no te cap manteniment o no existeix.")
+    except mysql.connector.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error de servidor: {e}")
+    finally:
+        cursor.close()
+        connexio.close()
+
+    return resultat
 
 # DONAR D'ALTA UN NOU VEHICLE
 class EstatVehicle(str, Enum):
@@ -121,6 +145,40 @@ def registrar_vehicle(vehicle: VehicleModel):
         connexio.close()
 
     return {"estat": "ok", "missatge": f"Vehicle afegit amb ID: {nou_id}"}
+
+# REGISTRAR UN MANTENIMENT NOU
+class MantenimentModel(BaseModel):
+    vehicle_id: int
+    descripcio: str
+    cost: float
+    data_manteniment: datetime.date
+
+@app.post("/manteniment")
+def registrar_manteniment(manteniment: MantenimentModel):
+    connexio = None
+    cursor = None
+
+    try:
+        connexio = connectar_bd()
+        cursor = connexio.cursor(dictionary=True)
+
+        sql = "INSERT INTO MANTENIMENTS (VEHICLE_ID, DESCRIPCIO, COST, DATA_MANTENIMENT) VALUES (%s, %s, %s, %s)"
+        valors = (manteniment.vehicle_id, manteniment.descripcio.strip(), manteniment.cost, manteniment.data_manteniment)
+        cursor.execute(sql, valors)
+        connexio.commit()
+        nou_id = cursor.lastrowid
+
+    except mysql.connector.Error as e:
+        connexio.rollback()
+        if e.errno == 1452:
+            raise HTTPException(status_code=404, detail=f"El vehicle amb ID {manteniment.vehicle_id} no existeix")
+        else:
+            raise HTTPException(status_code=500, detail=f"Error de servidor: {e}")
+    finally:
+        cursor.close()
+        connexio.close()
+
+    return {"estat": "ok", "missatge": f"Manteniment afegit amb ID: {nou_id}"}
 
 # EDITAR INFORMACIÓ D'UN VEHICLE
 class VehicleUpdateModel(BaseModel):

@@ -38,6 +38,8 @@
         <th>Descripció</th>
         <th>Cost</th>
         <th>Data manteniment</th>
+        <th>Matrícula</th>
+        <th>Marca</th>
       </tr>
       </thead>
       <tbody id="tbody_manteniments">
@@ -46,6 +48,30 @@
     </table>
 
     <p id="p_cost"></p>
+    <p id="p_mes_car"></p>
+
+    <label for="input_cercar">Cerca un manteniment per l'ID del vehicle: </label>
+    <input type="number" id="input_cercar">
+    <button id="btn_cercar">Cercar</button>
+    <p id="p_manteniment_cercat"></p>
+    <h4>Formulari per afegir un nou manteniment</h4>
+    <div>
+      <label for="input_vehicle_id">Escriu l'ID del vehicle: </label>
+      <input type="number" id="input_vehicle_id">
+    </div>
+    <div>
+      <label for="input_descripcio">Descriu breument què li passa al vehicle: </label>
+      <input type="text" id="input_descripcio">
+    </div>
+    <div>
+      <label for="input_cost">Escriu el cost del manteniment: </label>
+      <input type="number" id="input_cost">
+    </div>
+    <div>
+      <label for="input_data_manteniment">Escriu la data: </label>
+      <input type="date" id="input_data_manteniment">
+    </div>
+    <button id="btn_afegir_manteniment">Afegir</button>
     <script src="index.js"></script>
   </body>
 </html>
