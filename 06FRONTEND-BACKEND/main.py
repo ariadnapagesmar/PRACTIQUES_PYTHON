@@ -102,6 +102,27 @@ def cercar_manteniment(vehicle_id: int):
 
     return resultat
 
+# LLISTAR LES RESERVES
+@app.get("/reserves")
+def llistar_reserves():
+    connexio = None
+    cursor = None
+
+    try:
+        connexio = connectar_bd()
+        cursor = connexio.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM CONDUCTORS JOIN RESERVES USING (CONDUCTOR_ID) JOIN VEHICLES USING (VEHICLE_ID)")
+        resultats = cursor.fetchall()
+
+    except mysql.connector.Error as e:
+        raise HTTPException(status_code=500, detail=f"Error de servidor: {e}")
+    finally:
+        cursor.close()
+        connexio.close()
+
+    return resultats
+
+
 # DONAR D'ALTA UN NOU VEHICLE
 class EstatVehicle(str, Enum):
     DISPONIBLE = "DISPONIBLE"
@@ -153,7 +174,7 @@ class MantenimentModel(BaseModel):
     cost: float
     data_manteniment: datetime.date
 
-@app.post("/manteniment")
+@app.post("/manteniments")
 def registrar_manteniment(manteniment: MantenimentModel):
     connexio = None
     cursor = None
@@ -179,6 +200,44 @@ def registrar_manteniment(manteniment: MantenimentModel):
         connexio.close()
 
     return {"estat": "ok", "missatge": f"Manteniment afegit amb ID: {nou_id}"}
+
+# REGISTRAR UNA NOVA RESERVA
+class EstatReserva(str, Enum):
+    ACTIVA = "ACTIVA"
+    PENDENT = "PENDENT"
+    FINALITZADA = "FINALITZADA"
+
+class ReservaModel(BaseModel):
+    vehicle_id: int
+    conductor_id: int
+    data_inici: datetime.datetime
+    data_fi: datetime.datetime
+    estat_reserva: EstatReserva
+
+@app.post("/reserves")
+def registrar_reserva(reserva: ReservaModel):
+    connexio = None
+    cursor = None
+
+    try:
+        connexio = connectar_bd()
+        cursor = connexio.cursor(dictionary=True)
+
+        sql = "INSERT INTO RESERVES (VEHICLE_ID, CONDUCTOR_ID, DATA_INICI, DATA_FI, ESTAT_RESERVA) VALUES (%s, %s, %s, %s, %s)"
+        valors = (reserva.vehicle_id, reserva.conductor_id, reserva.data_inici,
+                  reserva.data_fi, reserva.estat_reserva)
+        cursor.execute(sql, valors)
+        connexio.commit()
+        nou_id = cursor.lastrowid
+
+    except mysql.connector.Error as e:
+        connexio.rollback()
+        raise HTTPException(status_code=500, detail=f"Error de servidor: {e}")
+    finally:
+        cursor.close()
+        connexio.close()
+
+    return {"estat": "ok", "missatge": f"Reserva registrada amb ID: {nou_id}"}
 
 # EDITAR INFORMACIÓ D'UN VEHICLE
 class VehicleUpdateModel(BaseModel):

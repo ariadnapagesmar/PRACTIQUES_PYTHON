@@ -1,0 +1,61 @@
+<!--Abans de començar (backend, un sol cop)
+
+Ara mateix la API no té res de reserves. Fes aquests dos endpoints, calcats dels de
+manteniments (no cal que siguin perfectes):
+-GET /reserves: retorna les reserves amb un JOIN a VEHICLES i CONDUCTORS, perquè
+arribin MATRICULA, MARCA i NOM (no només els números).
+-POST /reserves: amb un model Pydantic (vehicle_id, conductor_id, data_inici,
+data_fi), amb el 1452 convertit en 404.
+
+Bloc 1: Llistar i calcular (1-4)
+
+1. Taula de reserves
+ Pinta les reserves en una taula amb Matrícula, Conductor, Inici, Fi i Estat.
+ Separa-ho en dues funcions: una que demana i una altra que pinta
+ (pintarTaulaReserves(llista)).
+
+2. Colors per estat de la reserva
+ Posa l'estat en verd (ACTIVA), gris (FINALITZADA) o taronja (PENDENT). Pista:
+ la variable color calculada dins del bucle, com amb els vehicles.
+
+3. Resum amb comptadors
+ Mostra en un <p>: "X actives, Y pendents i Z finalitzades". Pista: tres comptadors
+ que sumin dins d'un sol bucle.
+
+4. Qui té més reserves
+ Mostra en un <p> el nom del conductor amb més reserves. Pista: un objecte que faci
+ de comptador, per exemple comptador[nom] = (comptador[nom] || 0) + 1, i després
+ busques el màxim.
+ 👉 És el més difícil del bloc. Si se't fa gran, fes-lo en comentaris abans de
+ programar-ho.
+-->
+
+<!DOCTYPE html>
+<html lang="ca">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La meva pagina web</title>
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <p id="p_missatge_error"></p>
+    <h4>Taula reserves</h4>
+
+    <table>
+      <thead>
+      <tr>
+        <th>Matrícula</th>
+        <th>Conductor</th>
+        <th>Data inici</th>
+        <th>Data fi</th>
+        <th>Estat reserva</th>
+      </tr>
+      </thead>
+      <tbody id="tbody_taula_reserves">
+
+      </tbody>
+    </table>
+    <script src="index.js"></script>
+  </body>
+</html>

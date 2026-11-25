@@ -38,19 +38,21 @@
 //  inexistent), mostra el que digui el backend, no un text inventat al frontend.
 
 const tbodyManteniments = document.getElementById("tbody_manteniments")
+const pMissatgeError = document.getElementById("p_missatge_error")
 
 function pintarTaulaManteniments(llista) {
 
     let fila = ""
 
-    for (manteniment of llista) {
+    for (const manteniment of llista) {
 
         fila += `<tr>
         <td>${manteniment.DESCRIPCIO}</td>
         <td>${manteniment.COST} €</td>
         <td>${manteniment.DATA_MANTENIMENT}</td>
         <td>${manteniment.MATRICULA}</td>
-        <td>${manteniment.MARCA}</td>`
+        <td>${manteniment.MARCA}</td>
+        </tr>`
     }
 
     tbodyManteniments.innerHTML = fila
@@ -58,27 +60,31 @@ function pintarTaulaManteniments(llista) {
 
 async function carregarManteniments() {
 
-    const resposta = await fetch("http://127.0.0.1:8000/manteniments")
-    const llistaManteniments = await resposta.json()
+    try {
+        const resposta = await fetch("http://127.0.0.1:8000/manteniments")
+        const llistaManteniments = await resposta.json()
 
-    pintarTaulaManteniments(llistaManteniments)
+        pintarTaulaManteniments(llistaManteniments)
 
-    console.log(llistaManteniments)
+        console.log(llistaManteniments)
 
-    let sumaTotal = 0
-    let mes_car = ["", 0]
+        let sumaTotal = 0
+        let mesCar = ["", 0]
 
-    for (manteniment of llistaManteniments) {
-        sumaTotal += manteniment.COST
-        if (manteniment.COST > mes_car[1]) {
-            mes_car = [manteniment.DESCRIPCIO, manteniment.COST]
+        for (const manteniment of llistaManteniments) {
+            sumaTotal += manteniment.COST
+            if (manteniment.COST > mesCar[1]) {
+                mesCar = [manteniment.DESCRIPCIO, manteniment.COST]
+            }
         }
-    }
 
-    const pCost = document.getElementById("p_cost")
-    pCost.innerText = "Cost total de manteniments = " + sumaTotal + "€"
-    const pMesCar  = document.getElementById("p_mes_car")
-    pMesCar.innerText = "Manteniment més car = " + mes_car[0] + " - " + mes_car[1]
+        const pCost = document.getElementById("p_cost")
+        pCost.innerText = "Cost total de manteniments = " + sumaTotal.toFixed(2) + "€"
+        const pMesCar  = document.getElementById("p_mes_car")
+        pMesCar.innerText = "Manteniment més car = " + mesCar[0] + " - " + mesCar[1]
+    } catch (error) {
+        pMissatgeError.innerText = "No s'ha pogut connectar amb el servidor.<br>" + error
+    }
 }
 
 carregarManteniments()
@@ -88,24 +94,74 @@ btnCercar.addEventListener("click", cercarManteniment)
 
 async function cercarManteniment() {
 
-    const inputCercar = document.getElementById("input_cercar").value
-    const pMantenimentCercat = document.getElementById("p_manteniment_cercat")
+    try {
+        const inputCercar = document.getElementById("input_cercar").value
+        const pMantenimentCercat = document.getElementById("p_manteniment_cercat")
 
-    const resposta = await fetch(`http://127.0.0.1:8000/manteniments/${inputCercar}`)
+        const resposta = await fetch(`http://127.0.0.1:8000/manteniments/${inputCercar}`)
 
-    if (!resposta.ok) {
-        const error = await resposta.json()
+        if (!resposta.ok) {
+            const error = await resposta.json()
 
-        pMantenimentCercat.innerHTML = error.detail
-    } else {
-        const mantenimentCercat = await resposta.json()
+            pMantenimentCercat.innerHTML = error.detail
+        } else {
+            const mantenimentCercat = await resposta.json()
 
-        let fila = ""
-        for (manteniment of mantenimentCercat) {
-            fila += manteniment.VEHICLE_ID + " - " + manteniment.DESCRIPCIO + " - " +
-                manteniment.COST + "€ - " + manteniment.DATA_MANTENIMENT + "\n"
+            let fila = ""
+            for (const manteniment of mantenimentCercat) {
+                fila += manteniment.VEHICLE_ID + " - " + manteniment.DESCRIPCIO + " - " +
+                    manteniment.COST + "€ - " + manteniment.DATA_MANTENIMENT + "\n"
+            }
             pMantenimentCercat.innerText = fila
         }
+    } catch (error) {
+        pMissatgeError.innerText = "No s'ha pogut connectar al servidor.<br>" + error
+    }
+}
+
+const btnAfegirManteniment = document.getElementById("btn_afegir_manteniment")
+btnAfegirManteniment.addEventListener("click", registrarManteniment)
+
+async function registrarManteniment() {
+
+    const inputVehicleId = document.getElementById("input_vehicle_id")
+    const inputDescripcio = document.getElementById("input_descripcio")
+    const inputCost = document.getElementById("input_cost")
+    const inputDataManteniment = document.getElementById("input_data_manteniment")
+
+    const vehicleIdNou = inputVehicleId.value
+    const descripcioNova = inputDescripcio.value
+    const costNou = inputCost.value
+    const dataMantenimentNova = inputDataManteniment.value
+
+    const nouManteniment = {
+        vehicle_id: Number(vehicleIdNou),
+        descripcio: descripcioNova,
+        cost: Number(costNou),
+        data_manteniment: dataMantenimentNova
+    }
+
+    try {
+        const resposta = await fetch("http://127.0.0.1:8000/manteniments", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(nouManteniment)
+        })
+
+        let pMissatgeAfegir = document.getElementById("p_missatge_afegir")
+
+        if (!resposta.ok) {
+            const error = await resposta.json()
+            console.log("Error: ", error.detail)
+            pMissatgeAfegir.innerText = error.detail
+        } else {
+            const dades = await resposta.json()
+            console.log(dades.missatge)
+            pMissatgeAfegir.innerText = dades.missatge
+            await carregarManteniments()
+        }
+    } catch (error) {
+        pMissatgeError.innerText = "No s'ha pogut connectar al servidor.<br>" + error
     }
 }
 
