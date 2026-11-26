@@ -42,6 +42,20 @@ Bloc 1: Llistar i calcular (1-4)
     <p id="p_missatge_error"></p>
     <h4>Taula reserves</h4>
 
+    <div>
+      <label for="select_estat_reserva">Estat de la reserva: </label>
+      <select name="select_estat_reserva" id="select_estat_reserva">
+        <option value="Tots">Tots</option>
+        <option value="ACTIVA">ACTIVA</option>
+        <option value="PENDENT">PENDENT</option>
+        <option value="FINALITZADA">FINALITZADA</option>
+      </select>
+    </div>
+    <div>
+      <label for="input_buscador">Conductor: </label>
+      <input type="text" id="input_buscador">
+    </div>
+
     <table>
       <thead>
       <tr>
@@ -56,6 +70,41 @@ Bloc 1: Llistar i calcular (1-4)
 
       </tbody>
     </table>
+    <p id="p_comptador_reserves"></p>
+    <p id="p_reserves_avui"></p>
+    <button id="btn_reserves_avui">Cercar reserves d'avui</button>
+
+    <h4>Formulari reserves</h4>
+    <div>
+      <label for="select_vehicle">Vehicle: </label>
+      <select name="select_vehicle" id="select_vehicle">
+
+      </select>
+    </div>
+    <div>
+      <label for="select_conductor">Conductor: </label>
+      <select name="select_conductor" id="select_conductor">
+
+      </select>
+    </div>
+    <div>
+      <label for="input_data_inici">Data inici: </label>
+      <input type="datetime-local" id="input_data_inici">
+    </div>
+    <div>
+      <label for="input_data_fi">Data fi: </label>
+      <input type="datetime-local" id="input_data_fi">
+    </div>
+    <div>
+      <label for="select_estat">Estat reserva: </label>
+      <select name="select_estat" id="select_estat">
+        <option value="ACTIVA">ACTIVA</option>
+        <option value="PENDENT">PENDENT</option>
+        <option value="FINALITZADA">FINALITZADA</option>
+      </select>
+    </div>
+    <button id="btn_reservar">Reservar</button>
+    <p id="p_missatge_error_formulari"></p>
     <script src="index.js"></script>
   </body>
 </html>
